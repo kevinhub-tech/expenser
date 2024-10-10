@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
@@ -67,14 +65,8 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/a
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
 
-### `npm run build` fails to minify
-
-# This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
-
 # expenser
 
 A small expense web app that will set up weekly expenses with savings. Stay Tuned ✨.
 
 IN PROGRESS 🚧🚧🚧
-
-> > > > > > > 38ad5aa104507b97ae3fc2d3aa8af3337a5340d4
