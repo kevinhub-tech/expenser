@@ -1,38 +1,49 @@
-.App {
+button {
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem !important;
+  border: none;
+  font-weight: 600;
+  font-size: 1.2rem !important;
+  font-family: "Akaya Kanadaka", system-ui !important;
+}
+
+button:hover {
+  background-color: transparent;
+  border: 1px solid #fff;
+  color: #fff;
+  transition: all 0.4s;
+  color: #fff;
+}
+
+section.result {
+  padding: 2rem;
+  background-color: #fff;
+  margin: 2rem 0rem;
+  border-radius: 0.5rem;
+}
+
+section.result h4 {
+  font-size: 1.2rem;
+  font-weight: 600;
+  font-family: "Akaya Kanadaka", system-ui;
+  color: red;
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+section.result table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: center;
+  font-family: "Ubuntu", sans-serif;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+section.result table tr th,
+section.result table tr td {
+  padding: 0.5rem 1rem;
+  border-bottom: 1px solid #000000;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+section.result table tr td {
+  font-weight: 600;
+  color: #1E223F;
 }
