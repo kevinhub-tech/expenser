@@ -53,8 +53,8 @@ function Result({ isSaved, saveInLocal, totalAmount, savingPercent, estiBill }) 
           </table>
         </section>
         <div className='text-center'>
-          <button onClick={saveInLocal} disabled={isSaved}>{isSaved ? "Saved" : "Save"}</button>
-        </div>
+          <button onClick={saveInLocal} disabled={isSaved} className={isSaved ? "nohover" : ""}>{isSaved ? "Saved" : "Save"}</button>
+        </div >
       </>
     )
   }

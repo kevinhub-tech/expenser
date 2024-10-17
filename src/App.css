@@ -7,6 +7,10 @@ button {
   font-family: "Akaya Kanadaka", system-ui !important;
 }
 
+button.nohover {
+  pointer-events: none;
+}
+
 button:hover {
   background-color: transparent;
   border: 1px solid #fff;
