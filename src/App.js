@@ -3,13 +3,14 @@ import './App.css';
 import { Col, Container, Row } from 'react-bootstrap';
 
 // Return result table to parent
-function Result({ totalAmount, savingPercent, estiBill }) {
+function Result({ isSaved, saveInLocal, totalAmount, savingPercent, estiBill }) {
+
   const totalAmountAfterBill = totalAmount - estiBill;
   const savingAmount = totalAmountAfterBill * savingPercent / 100;
   const remainingAmount = totalAmountAfterBill - savingAmount;
 
   let error;
-  if (totalAmount < estiBill) {
+  if (estiBill > totalAmount) {
     error = "Estimated Bill cannot exceed over total amount.";
   }
 
@@ -22,7 +23,6 @@ function Result({ totalAmount, savingPercent, estiBill }) {
   }
 
   if (error) {
-
     return (
       <section className="result">
         <h4>{error}</h4>
@@ -30,27 +30,32 @@ function Result({ totalAmount, savingPercent, estiBill }) {
     );
   } else {
     return (
-      <section className="result">
-        <table>
-          <thead>
-            <tr>
-              <th>1st Week</th>
-              <th>2nd Week</th>
-              <th>3rd Week</th>
-              <th>4rd Week</th>
-              <th>Saving Amount</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              {Array(4).fill(remainingAmount / 4).map((weekAmount, index) => (
-                <td key={index}>{weekAmount}</td>
-              ))}
-              <td>{savingAmount}</td>
-            </tr>
-          </tbody>
-        </table>
-      </section>
+      <>
+        <section className="result">
+          <table>
+            <thead>
+              <tr>
+                <th>1st Week</th>
+                <th>2nd Week</th>
+                <th>3rd Week</th>
+                <th>4rd Week</th>
+                <th>Saving Amount</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                {Array(4).fill(remainingAmount / 4).map((weekAmount, index) => (
+                  <td key={index}>{weekAmount}</td>
+                ))}
+                <td>{savingAmount}</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+        <div className='text-center'>
+          <button onClick={saveInLocal} disabled={isSaved}>{isSaved ? "Saved" : "Save"}</button>
+        </div>
+      </>
     )
   }
 }
@@ -60,18 +65,32 @@ export default function Expenser() {
   const [totalAmount, setTotalAmount] = useState(0);
   const [savingPercent, setSavingPercent] = useState(0);
   const [estiBill, setEstiBill] = useState(0);
-
+  const [isSaved, setIsSaved] = useState(false);
   function setInputValue(element, value) {
+    let refinedValue = Number(value);
     if (element === "amount") {
-      setTotalAmount(value);
-      setCalculate(false);
+      setTotalAmount(refinedValue);
     } else if (element === "saving") {
-      setSavingPercent(value);
-      setCalculate(false);
+      setSavingPercent(refinedValue);
     } else if (element === 'estibill') {
-      setEstiBill(value);
-      setCalculate(false);
+      setEstiBill(refinedValue);
     }
+    setIsSaved(false);
+    setCalculate(false);
+  }
+
+  function setLocalStorage() {
+    if (localStorage.getItem('totalAmount') && localStorage.getItem('savingPercent') && localStorage.getItem('estiBill')) {
+      localStorage.removeItem('totalAmount');
+      localStorage.removeItem('savingPercent');
+      localStorage.removeItem('estiBill');
+    };
+
+    localStorage.setItem('totalAmount', totalAmount);
+    localStorage.setItem('savingPercent', savingPercent);
+    localStorage.setItem('estiBill', estiBill);
+
+    setIsSaved(true);
   }
 
   return (
@@ -81,27 +100,26 @@ export default function Expenser() {
         <Row>
           <Col md="3" className='text-center'>
             <label>Enter your total amount:</label><br></br>
-            <input class="" type="number" onChange={(e) => setInputValue("amount", e.target.value)} value={totalAmount}></input>
+            <input type="number" onChange={(e) => setInputValue("amount", e.target.value)} value={totalAmount}></input>
           </Col>
           <Col md="5" className='text-center'>
             <label>Enter your saving amount: (40% maximum)</label><br></br>
-            <input class="" type="number" onChange={(e) => setInputValue('saving', e.target.value)} value={savingPercent}></input>
+            <input type="number" onChange={(e) => setInputValue('saving', e.target.value)} value={savingPercent}></input>
           </Col>
           <Col md="4" className='text-center'>
             <label>Enter your estimated  bill amount:</label><br></br>
-            <input class="" type="number" onChange={(e) => setInputValue('estibill', e.target.value)} value={estiBill}></input>
+            <input type="number" onChange={(e) => setInputValue('estibill', e.target.value)} value={estiBill}></input>
           </Col>
         </Row>
         <div className='text-center mt-4'>
           <button onClick={() => setCalculate(true)}>Calculate</button>
         </div>
-
-
         {
           calculate ?
-            <Result totalAmount={totalAmount} savingPercent={savingPercent} estiBill={estiBill} ></Result> : null
-        }
 
+            <Result isSaved={isSaved} saveInLocal={setLocalStorage} totalAmount={totalAmount} savingPercent={savingPercent} estiBill={estiBill} ></Result>
+            : null
+        }
 
       </Container >
     </>
