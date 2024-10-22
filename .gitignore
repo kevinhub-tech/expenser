@@ -13,6 +13,7 @@ expenser_be/node_modules
 /build
 
 # misc
+expenser_be/.env
 .DS_Store
 .env.local
 .env.development.local
