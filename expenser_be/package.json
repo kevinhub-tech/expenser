@@ -1,0 +1,14 @@
+{
+  "name": "expenser_be",
+  "version": "1.0.0",
+  "description": "Backend Code for expenser",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Kevinhub_tech",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.21.1"
+  }
+}
