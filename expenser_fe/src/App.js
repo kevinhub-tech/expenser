@@ -20,7 +20,7 @@ function Result({ calculationData, cookieExist, userDataExist, dataSaved, setDat
     // Call put method and disabled button
     try {
       const userId = Cookies.get('userId');
-      const updateRoute = webServiceRoute + "updateexpenser/" + userId;
+      const updateRoute = webServiceRoute + "updateexpense/" + userId;
       const response = await axios.put(updateRoute, calculationData,
         {
           headers: {
