@@ -5,18 +5,14 @@ import { Col, Container, Row } from 'react-bootstrap';
 import { jwtDecode } from 'jwt-decode';
 import Cookies from 'js-cookie';
 import axios from 'axios';
+import ThemeSelector from './ThemeChanger';
 // Return result table to parent
-function Result({ calculationData, updateCookieState, cookieExist, userDataExist, dataSaved, setDataSaved, initialLoad }) {
+function Result({ calculationData, cookieExist, userDataExist, dataSaved, setDataSaved, initialLoad, setInitialLoad }) {
 
   const totalAmountAfterBill = calculationData.totalAmount - calculationData.estiBill;
   const savingAmount = totalAmountAfterBill * calculationData.savingPercent / 100;
   const remainingAmount = totalAmountAfterBill - savingAmount;
 
-  function setCookie(credential) {
-    Cookies.set('userId', credential.sub, { expires: 2 });
-    Cookies.set('userName', credential.name, { expires: 2 });
-    updateCookieState(true);
-  }
 
   async function updateUserExpense() {
     // Call put method and disabled button
@@ -96,29 +92,15 @@ function Result({ calculationData, updateCookieState, cookieExist, userDataExist
             </tbody>
           </table>
         </section>
-        {!cookieExist && <div className='text-center'>
-          <h2 className="mb-4">Sign in with Google to Save Your Expense</h2>
-          <GoogleLogin
-            onSuccess={(credentialResponse) => {
-              const decoded = jwtDecode(credentialResponse.credential);
-              setCookie(decoded);
-            }}
-            onError={(err) => {
-              console.log('Login Failed' + err);
-            }}
-            shape="pill"
-            width="100px"
-            text='continue_with'
-          />;
-        </div >}
+
         {userDataExist && cookieExist && !initialLoad &&
           <div className='text-center'>
-            <button onClick={updateUserExpense} disabled={dataSaved}>{dataSaved ? "Updated!" : "Update"}</button>
+            <button className="expense-button" onClick={updateUserExpense} disabled={dataSaved}>{dataSaved ? "Updated!" : "Update"}</button>
           </div >
         }
         {!userDataExist && cookieExist && !initialLoad &&
           <div className='text-center'>
-            <button onClick={saveUserExpense} disabled={dataSaved}>{dataSaved ? "Saved!" : "Save"}</button>
+            <button className="expense-button" onClick={saveUserExpense} disabled={dataSaved}>{dataSaved ? "Saved!" : "Save"}</button>
           </div >
         }
 
@@ -148,6 +130,12 @@ export default function Expenser() {
     setDataSaved(false);
   };
 
+
+  function setCookie(credential) {
+    Cookies.set('userId', credential.sub, { expires: 2 });
+    Cookies.set('userName', credential.name, { expires: 2 });
+    setIsCookieExist(true);
+  }
   /**
   *  check Cookie and get userData
   *  if data exist, setInputValues
@@ -174,13 +162,15 @@ export default function Expenser() {
       }
       getData();
     }
-  }, []);
+  }, [isCookieExist]);
 
 
 
   return (
     <>
+      <ThemeSelector></ThemeSelector>
       <h2 className='text-center mb-4'>Welcome to Expenser {Cookies.get('userName') && ", " + Cookies.get('userName')}</h2>
+
       <Container>
         <Row>
           <Col md="3" className='text-center'>
@@ -197,18 +187,33 @@ export default function Expenser() {
           </Col>
         </Row>
         <div className='text-center mt-4'>
-          <button onClick={() => setCalculate(true)}>Calculate</button>
+          <button className="expense-button" onClick={() => setCalculate(true)}>Calculate</button>
         </div>
+        {!isCookieExist && <div className='text-center'>
+          <h2 className="mt-5 mb-3">Sign in with Google to Gain Access to Your Expense</h2>
+          <GoogleLogin
+            onSuccess={(credentialResponse) => {
+              const decoded = jwtDecode(credentialResponse.credential);
+              setCookie(decoded);
+            }}
+            onError={(err) => {
+              console.log('Login Failed' + err);
+            }}
+            shape="pill"
+            width="100px"
+            text='continue_with'
+          />;
+        </div >}
         {
           calculate &&
           <Result
             calculationData={inputValues}
             cookieExist={isCookieExist}
-            updateCookieState={setIsCookieExist}
             userDataExist={userDataExist}
             dataSaved={dataSaved}
             setDataSaved={setDataSaved}
             initialLoad={initialLoad}
+            setInitialLoad={setInitialLoad}
           >
           </Result>
         }

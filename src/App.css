@@ -1,4 +1,4 @@
-button {
+button.expense-button {
   padding: 0.5rem 1rem;
   border-radius: 0.5rem !important;
   border: none;
@@ -11,8 +11,8 @@ button.nohover {
   pointer-events: none;
 }
 
-button:hover {
-  background-color: transparent;
+button.expense-button:hover {
+  background-color: var(--expenser-button-bg-color);
   border: 1px solid #fff;
   color: #fff;
   transition: all 0.4s;
@@ -21,7 +21,7 @@ button:hover {
 
 section.result {
   padding: 2rem;
-  background-color: #fff;
+  background-color: var(--result-section-bg-color);
   margin: 2rem 0rem;
   border-radius: 0.5rem;
 }
@@ -36,6 +36,8 @@ section.result h4 {
 
 section.result table {
   width: 100%;
+  margin: 0;
+  padding: 0;
   border-collapse: collapse;
   text-align: center;
   font-family: "Ubuntu", sans-serif;
@@ -44,12 +46,12 @@ section.result table {
 section.result table tr th,
 section.result table tr td {
   padding: 0.5rem 1rem;
-  border-bottom: 1px solid #000000;
+  border-bottom: 1px solid var(--table-border-color);
+  color: var(--table-text-color);
 }
 
 section.result table tr td {
   font-weight: 600;
-  color: #1E223F;
 }
 
 div.S9gUrf-YoZ4jf {

@@ -1,6 +1,28 @@
 @import url('https://fonts.googleapis.com/css2?family=Akaya+Kanadaka&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Akaya+Kanadaka&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap');
 
+:root {
+  --bg-color: #1E223F;
+  --text-color: #fff;
+  --input-bg-color: aliceblue;
+  --input-text-color: #000000;
+  --expenser-button-bg-color: transparent;
+  --result-section-bg-color: #fff;
+  --table-text-color: #1E223F;
+  --table-border-color: #000000;
+}
+
+body[data-theme="dark"] {
+  --bg-color: #fff;
+  --text-color: #1E223F;
+  --input-bg-color: rgb(61, 93, 120);
+  --input-text-color: #fff;
+  --expenser-button-bg-color: rgb(61, 93, 120);
+  --result-section-bg-color: rgb(61, 93, 120);
+  --table-text-color: #fff;
+  --table-border-color: #fff;
+}
+
 
 body {
   margin: 0;
@@ -14,7 +36,16 @@ body {
   align-items: center;
   width: 100%;
   height: 100dvh;
-  background-color: #1E223F !important;
+  background-color: var(--bg-color) !important;
+  transition: all 1s ease-in;
+}
+
+
+
+section.theme-picker {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
 }
 
 code {
@@ -26,18 +57,20 @@ h2 {
   font-family: "Akaya Kanadaka", system-ui;
   font-weight: 600;
   font-size: 2rem;
-  color: #fff !important;
+  color: var(--text-color) !important;
 }
 
 label {
-  color: #fff;
+  color: var(--text-color);
   font-family: "Ubuntu", sans-serif;
   margin-bottom: 0.5rem;
 }
 
+
 input {
   width: 100%;
-  background-color: aliceblue;
+  background-color: var(--input-bg-color);
+  color: var(--input-text-color);
   padding: 0.5rem 1rem;
   border-radius: 1rem;
   border: none;
