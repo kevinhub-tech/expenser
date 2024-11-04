@@ -7,6 +7,8 @@ import Cookies from 'js-cookie';
 import axios from 'axios';
 import ThemeSelector from './ThemeChanger';
 // Return result table to parent
+
+const webServiceRoute = "https://expenser-sdvt.onrender.com/expense/"
 function Result({ calculationData, cookieExist, userDataExist, dataSaved, setDataSaved, initialLoad, setInitialLoad }) {
 
   const totalAmountAfterBill = calculationData.totalAmount - calculationData.estiBill;
@@ -18,7 +20,8 @@ function Result({ calculationData, cookieExist, userDataExist, dataSaved, setDat
     // Call put method and disabled button
     try {
       const userId = Cookies.get('userId');
-      const response = await axios.put(`http://localhost:5000/expense/updateexpense/${userId}`, calculationData,
+      const updateRoute = webServiceRoute + "updateexpenser/" + userId;
+      const response = await axios.put(updateRoute, calculationData,
         {
           headers: {
             'Content-Type': 'application/json'
@@ -35,7 +38,8 @@ function Result({ calculationData, cookieExist, userDataExist, dataSaved, setDat
   async function saveUserExpense() {
     // Call post method and set userDataExist to true
     try {
-      const response = await axios.post('http://localhost:5000/expense/createexpense', calculationData,
+      const saveRoute = webServiceRoute + "createexpense";
+      const response = await axios.post(saveRoute, calculationData,
         {
           headers: {
             'Content-Type': 'application/json'
@@ -146,7 +150,8 @@ export default function Expenser() {
       async function getData() {
         try {
           const userId = Cookies.get('userId');
-          const response = await axios.get(`http://localhost:5000/expense/getexpense/${userId}`);
+          const getRoute = webServiceRoute + "getexpense/" + userId;
+          const response = await axios.get(getRoute);
           if (response.status === 200) {
             if (response.data.length !== 0) {
               setUserDataExist(true);
