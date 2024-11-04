@@ -2,7 +2,7 @@
 
 # dependencies
 expenser_be/node_modules
-/node_modules
+expenser_fe/node_modules
 /.pnp
 .pnp.js
 
@@ -23,3 +23,4 @@ expenser_be/.env
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+node_modules
