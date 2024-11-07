@@ -17,7 +17,7 @@ mongoose.connect(mongodbURL)
     .catch(err => console.error('MongoDB connection error:', err));
 
 app.use(cors({
-    origin: 'https://kevexpenser.netlify.app', // Frontend URL
+    origin: ['https://kevexpenser.netlify.app', 'http://localhost:3000'], // Frontend URL
     credentials: true // Allow credentials (cookies)
 }));
 
