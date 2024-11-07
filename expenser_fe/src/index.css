@@ -78,7 +78,7 @@ input {
 
 @media screen and (max-width: 450px) {
   div#root {
-    margin-top: 10rem;
+    margin-top: 15rem;
   }
 
   table tr {
