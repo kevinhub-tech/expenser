@@ -75,3 +75,27 @@ input {
   border-radius: 1rem;
   border: none;
 }
+
+@media screen and (max-width: 450px) {
+  div#root {
+    margin-top: 10rem;
+  }
+
+  table tr {
+    display: flex;
+    flex-direction: column;
+  }
+
+  table tr td {
+    display: flex;
+    justify-content: space-evenly;
+  }
+
+  table tr td:before {
+    content: attr(week);
+  }
+
+  table thead {
+    display: none;
+  }
+}

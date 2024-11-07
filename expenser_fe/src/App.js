@@ -14,8 +14,15 @@ function Result({ calculationData, cookieExist, userDataExist, dataSaved, setDat
   const totalAmountAfterBill = calculationData.totalAmount - calculationData.estiBill;
   const savingAmount = totalAmountAfterBill * calculationData.savingPercent / 100;
   const remainingAmount = totalAmountAfterBill - savingAmount;
-
-
+  const formatWeekLabelforMob = (weekNumber) => {
+    switch (weekNumber) {
+      case 1: return '1st week :';
+      case 2: return '2nd week :';
+      case 3: return '3rd week :';
+      case 4: return '4th week :';
+      default: return `${weekNumber}th week`;
+    }
+  };
   async function updateUserExpense() {
     // Call put method and disabled button
     try {
@@ -89,9 +96,9 @@ function Result({ calculationData, cookieExist, userDataExist, dataSaved, setDat
             <tbody>
               <tr>
                 {Array(4).fill(remainingAmount / 4).map((weekAmount, index) => (
-                  <td key={index}>{weekAmount}</td>
+                  <td key={index} week={formatWeekLabelforMob(index + 1)}>{weekAmount}</td>
                 ))}
-                <td>{savingAmount}</td>
+                <td week="Saving Amount : ">{savingAmount}</td>
               </tr>
             </tbody>
           </table>
@@ -175,7 +182,6 @@ export default function Expenser() {
     <>
       <ThemeSelector></ThemeSelector>
       <h2 className='text-center mb-4'>Welcome to Expenser {Cookies.get('userName') && ", " + Cookies.get('userName')}</h2>
-
       <Container>
         <Row>
           <Col md="3" className='text-center'>
