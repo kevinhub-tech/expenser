@@ -6,6 +6,7 @@ import { jwtDecode } from 'jwt-decode';
 import Cookies from 'js-cookie';
 import axios from 'axios';
 import ThemeSelector from './ThemeChanger';
+import Loader from './Loader';
 // Return result table to parent
 
 const webServiceRoute = "https://expenser-sdvt.onrender.com/expense/"
@@ -125,6 +126,7 @@ export default function Expenser() {
   const [calculate, setCalculate] = useState(false);
   const [dataSaved, setDataSaved] = useState(false);
   const [initialLoad, setInitialLoad] = useState(true);
+  const [dataLoading, setDataLoading] = useState(true);
   const [isCookieExist, setIsCookieExist] = useState(!!(Cookies.get('userId')));
   const [userDataExist, setUserDataExist] = useState(false);
 
@@ -170,66 +172,71 @@ export default function Expenser() {
           }
         } catch (err) {
           console.log(err)
+        } finally {
+          setDataLoading(false);
         }
       }
       getData();
     }
   }, [isCookieExist]);
 
+  if (dataLoading && isCookieExist) {
+    return <Loader></Loader>
+  } else {
+    return (
+      <>
+        <ThemeSelector></ThemeSelector>
+        <h2 className='text-center mb-4'>Welcome to Expenser {Cookies.get('userName') && ", " + Cookies.get('userName')}</h2>
+        <Container>
+          <Row>
+            <Col md="3" className='text-center'>
+              <label>Enter your total amount:</label><br></br>
+              <input type="number" name="totalAmount" onChange={(e) => setInputValue(e)} value={inputValues.totalAmount}></input>
+            </Col>
+            <Col md="5" className='text-center'>
+              <label>Enter your saving amount: (40% maximum)</label><br></br>
+              <input type="number" name="savingPercent" onChange={(e) => setInputValue(e)} value={inputValues.savingPercent}></input>
+            </Col>
+            <Col md="4" className='text-center'>
+              <label>Enter your estimated  bill amount:</label><br></br>
+              <input type="number" name="estiBill" onChange={(e) => setInputValue(e)} value={inputValues.estiBill}></input>
+            </Col>
+          </Row>
+          <div className='text-center mt-4'>
+            <button className="expense-button" onClick={() => setCalculate(true)}>Calculate</button>
+          </div>
+          {!isCookieExist && <div className='text-center'>
+            <h2 className="mt-5 mb-3">Sign in with Google to Gain Access to Your Expense</h2>
+            <GoogleLogin
+              onSuccess={(credentialResponse) => {
+                const decoded = jwtDecode(credentialResponse.credential);
+                setCookie(decoded);
+              }}
+              onError={(err) => {
+                console.log('Login Failed' + err);
+              }}
+              shape="pill"
+              width="100px"
+              text='continue_with'
+            />;
+          </div >}
+          {
+            calculate &&
+            <Result
+              calculationData={inputValues}
+              cookieExist={isCookieExist}
+              userDataExist={userDataExist}
+              dataSaved={dataSaved}
+              setDataSaved={setDataSaved}
+              initialLoad={initialLoad}
+              setInitialLoad={setInitialLoad}
+            >
+            </Result>
+          }
 
+        </Container >
+      </>
+    );
+  }
 
-  return (
-    <>
-      <ThemeSelector></ThemeSelector>
-      <h2 className='text-center mb-4'>Welcome to Expenser {Cookies.get('userName') && ", " + Cookies.get('userName')}</h2>
-      <Container>
-        <Row>
-          <Col md="3" className='text-center'>
-            <label>Enter your total amount:</label><br></br>
-            <input type="number" name="totalAmount" onChange={(e) => setInputValue(e)} value={inputValues.totalAmount}></input>
-          </Col>
-          <Col md="5" className='text-center'>
-            <label>Enter your saving amount: (40% maximum)</label><br></br>
-            <input type="number" name="savingPercent" onChange={(e) => setInputValue(e)} value={inputValues.savingPercent}></input>
-          </Col>
-          <Col md="4" className='text-center'>
-            <label>Enter your estimated  bill amount:</label><br></br>
-            <input type="number" name="estiBill" onChange={(e) => setInputValue(e)} value={inputValues.estiBill}></input>
-          </Col>
-        </Row>
-        <div className='text-center mt-4'>
-          <button className="expense-button" onClick={() => setCalculate(true)}>Calculate</button>
-        </div>
-        {!isCookieExist && <div className='text-center'>
-          <h2 className="mt-5 mb-3">Sign in with Google to Gain Access to Your Expense</h2>
-          <GoogleLogin
-            onSuccess={(credentialResponse) => {
-              const decoded = jwtDecode(credentialResponse.credential);
-              setCookie(decoded);
-            }}
-            onError={(err) => {
-              console.log('Login Failed' + err);
-            }}
-            shape="pill"
-            width="100px"
-            text='continue_with'
-          />;
-        </div >}
-        {
-          calculate &&
-          <Result
-            calculationData={inputValues}
-            cookieExist={isCookieExist}
-            userDataExist={userDataExist}
-            dataSaved={dataSaved}
-            setDataSaved={setDataSaved}
-            initialLoad={initialLoad}
-            setInitialLoad={setInitialLoad}
-          >
-          </Result>
-        }
-
-      </Container >
-    </>
-  );
 }
