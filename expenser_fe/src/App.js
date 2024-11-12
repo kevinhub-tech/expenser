@@ -184,7 +184,7 @@ export default function Expenser() {
     return <Loader></Loader>
   } else {
     return (
-      <>
+      <section className='main-container'>
         <ThemeSelector></ThemeSelector>
         <h2 className='text-center mb-4'>Welcome to Expenser {Cookies.get('userName') && ", " + Cookies.get('userName')}</h2>
         <Container>
@@ -235,7 +235,7 @@ export default function Expenser() {
           }
 
         </Container >
-      </>
+      </section>
     );
   }
 
